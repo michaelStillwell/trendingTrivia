@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
 
 <head>
   <meta charset="utf-8">
@@ -9,68 +9,70 @@
   <link rel="shortcut icon" href="/styles/assets/crownFavicon.png">
 </head>
 
-<body>
+<body ng-controller="questionsCtrl">
   <header>
     <div></div>
     <h1>Trivia Trends</h1>
-    <button><span>+</span> Add Question</button>
+    <button ng-click="toggleShow()"><span>+</span> Add Question</button>
   </header>
   <article>
     <nav>
-      <a>All Questions</a>
-      <a>Easy</a>
-      <a>Medium</a>
-      <a>Hard</a>
-      <a>Search by Animal</a>
+      <a ng-click="changeFilter(0)">All Questions</a>
+      <a ng-click="changeFilter(1)">Easy</a>
+      <a ng-click="changeFilter(2)">Medium</a>
+      <a ng-click="changeFilter(3)">Hard</a>
+      <a ng-click="toggleSearch()">Search by Animal</a>
     </nav>
-    <div class="search">
-      <input type="text" placeholder="Animal to search by">
+    <div class="search" ng-show="searchActive">
+      <input type="text" placeholder="Animal to search by" ng-model="searchBar">
     </div>
 
     <!-- Questions go here -->
-
+    <question-container ng-repeat="question in questions | filter: {animal: searchBar}"></question-container>
+    <a class="change-page right" ng-click="changePage('add')" ng-show="showNext">Next Page ></a>
+    <a class="change-page left" ng-click="changePage('sub')" ng-show="showPrev">< Prev Page </a>
   </article>
 
-  <div class="modal">
+  <div class="modal" ng-show="modalShow">
     <form>
-      <h4 class="close">X</h4>
-      <span>Question</span><input type="text" ng-model="<!-- Question -->">
-      <span>Animal it's about</span><input type="text" ng-model="<!-- Animal -->">
+      <h4 class="close" ng-click="toggleShow()">X</h4>
+      <span>Question</span><input type="text" ng-model="question">
+      <span>Animal it's about</span><input type="text" ng-model="animal">
       <span>Difficulty</span>
       <div class="range">
-        <input type="range" min="1" max="3" ng-model="<!-- Difficulty -->">
+        <input type="range" min="1" max="3" ng-model="difficulty">
 
-        <h5>{{newQuestion.difficulty}}</h5>
+        <h5>{{difficulty}}</h5>
       </div>
       <h4>Options</h4>
       <div>
-        <input type="radio" ng-model="" value="1">
-        <input type="text" ng-model="">
+        <input id="radio1" type="radio" ng-model="correct_answer" value="1">
+        <input type="text" ng-model="option1">
       </div>
       <div>
-        <input type="radio" ng-model="" value="2">
-        <input type="text" ng-model="">
+        <input id="radio2" type="radio" ng-model="correct_answer" value="2">
+        <input type="text" ng-model="option2">
       </div>
       <div>
-        <input type="radio" ng-model="" value="3">
-        <input type="text" ng-model="">
+        <input id="radio3" type="radio" ng-model="correct_answer" value="3">
+        <input type="text" ng-model="option3">
       </div>
       <div>
-        <input type="radio" ng-model="" value="4">
-        <input type="text" ng-model="">
+        <input id="radio4" type="radio" ng-model="correct_answer" value="4">
+        <input type="text" ng-model="option4">
       </div>
 
       <!--Add question buttons-->
-      <div class="buttons">
-        <button class="green">Save Question</button>
-        <button>Cancel</button>
+      <div class="buttons" ng-show="!editing">
+        <button ng-click="postQuestion({question: question, animal: animal, difficulty: difficulty, options: {1: option1, 2: option2, 3: option3, 4: option4}, correct_answer: correct_answer})" class="Easy">Save Question</button>
+        <button ng-click="toggleShow()">Cancel</button>
       </div>
 
       <!--Edit & Delete question buttons-->
-      <div class="buttons">
-        <button class="red">Delete Question</button>
-        <button class="green">Save Changes</button>
-        <button>Cancel</button>
+      <div class="buttons" ng-show="editing">
+        <button ng-click="deleteQuestion(_id)" class="Hard">Delete Question</button>
+        <button ng-click="putQuestion(_id, {question: question, animal: animal, difficulty: difficulty, options: {1: option1, 2: option2, 3: option3, 4: option4}, correct_answer: correct_answer})" class="Easy">Save Changes</button>
+        <button ng-click="toggleShow()">Cancel</button>
       </div>
 
     </form>
@@ -80,8 +82,10 @@
 
 
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.js" charset="utf-8"></script>
-  <script src="./app.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
+  <script src="./js/app.js" charset="utf-8"></script>
+  <script src="./js/controllers/questionsCtrl.js"></script>
+  <script src="./js/controllers/questionsSrvc.js"></script>
 </body>
 
 </html>

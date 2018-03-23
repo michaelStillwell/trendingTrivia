@@ -122,6 +122,9 @@ div.gear:hover {
   display: flex;
   flex-wrap: wrap;
 }
+.question-wrapper input[type="radio"] {
+  opacity: 0;
+}
 
 ul li {
   width: 40%;
@@ -152,7 +155,7 @@ label, input[type="radio"], input[type="range"] {
   width: 100vw;
   background: rgba(88, 88, 88, 0.55);
   display: flex;
-  display: none; /* ALERTDELETEME - REMOVE THIS line only WHEN STYLING THE MODAL*/
+  /* display: none; ALERTDELETEME - REMOVE THIS line only WHEN STYLING THE MODAL */
   justify-content: center;
   align-items: center;
 }
@@ -219,12 +222,12 @@ input[type="range"] {
 .right {
   float: right;
 }
-.green {
+.Easy {
   background: rgb(89, 189, 117);
 }
-.yellow {
+.Medium {
   background: rgb(213, 211, 70);
 }
-.red {
+.Hard {
   background: rgb(218, 45, 123);
 }

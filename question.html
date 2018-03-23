@@ -1,14 +1,16 @@
-<div class="question-wrapper">
+<div class="question-wrapper" id="{{ question._id }}">
 
-<h3><!-- Question --></h3>
-<div ><!-- Difficulty --></div>
-<div class="gear" >
+<h3>{{ question.question }}</h3>
+<div class="{{ question.difficulty }}">{{ question.difficulty }}</div>
+<div class="gear" ng-click="toggleShow(question)">
   <img src="/styles/assets/gear.svg" alt="">
 </div>
 <ul>
-  <li > <!-- Repeated for each option -->
-    <input type="radio">
-      <label><!-- Option text --></label>
+  <li ng-repeat="option in question.options"> <!-- Repeated for each option -->
+    <label>
+      <input type="radio" name="{{ question }}" ng-click="checkAnswer(question, option)">
+      {{ option }}
+    </label>
   </li>
 </ul>
 
